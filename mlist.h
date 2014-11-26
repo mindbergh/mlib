@@ -1,17 +1,18 @@
-/* This is a singly linked list
+/* This is a double linked list
  *
  * Author: Ming Fang <mingf@cs.cmu.edu>
  * Date: 11/26/2014
  */
 
-#ifndef MSLIST_H
-#define MSLIST_H
+#ifndef MLIST_H
+#define MLIST_H
 
-typedef struct _MSList MSList;
+typedef struct _MList MList;
 
-struct _MSList {
+struct _MList {
   void* data;
-  MSList* next;
+  MList* prev;
+  MList* next;
 };
 
 
@@ -26,12 +27,7 @@ int mslist_index(MSList* list, void* data);
 MSList* mslist_last(MSList *list);
 unsigned int mslist_length(MSList *list);
 void mslist_foreach (MSList* list, MFunc func, void* func_data);
-MSList* mslist_remove (MSList *list, void* data);
-MSList* mslist_remove_all(MSList *list, void* data);
-MSList* mslist_remove_link(MSList *list, MSList *link);
-MSList* mslist_delete_link(MSList *list, MSList *link);
-void mslist_free(MSList *list);
-void mslist_free_full(MSList *list);
+
 
 
 #endif
