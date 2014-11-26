@@ -4,6 +4,8 @@
  * Date: 11/26/2014
  */
 
+#include <mlib/mtypes.h>
+
 #define mnew0(type) ((type*) calloc(sizeof (type)))
 #define mnew(type) ((type*) malloc(sizeof (type)))
 
