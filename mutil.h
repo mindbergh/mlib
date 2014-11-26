@@ -4,7 +4,7 @@
  * Date: 11/26/2014
  */
 
-#define m_new0(type) ((type*) calloc(sizeof (type)))
-#define m_new(type) ((type*) malloc(sizeof (type)))
+#define mnew0(type) ((type*) calloc(sizeof (type)))
+#define mnew(type) ((type*) malloc(sizeof (type)))
 
 
