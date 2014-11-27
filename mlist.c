@@ -107,6 +107,18 @@ MList* mlist_find(MList* list, void* data) {
     return list;
 }
 
+MList* mlist_find_custom(MList* list, const void* data, MCompareFunc func) {
+  if (func == NULL) return NULL;
+
+  while (list) {
+      if (!(*func)(list->data, data))
+        return list;
+      list = list->next;
+    }
+  return NULL;
+}
+
+
 int mlist_index(MList* list, void* data) {
     int i = 0;
     while (list) {
@@ -141,11 +153,10 @@ unsigned int mlist_length(MList *list) {
 void mlist_foreach (MList* list, MFunc func, void* func_data) {
     while (list) {
         MList *next = list->next;
-        (*func) (list->data, func_data);
+        (*func)(list->data, func_data);
         list = next;
     }
 }
-
 
 
 /* remove a node with the given data

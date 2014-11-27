@@ -9,8 +9,8 @@
 
 
 typedef int (*MCompareFunc) (const void* a, const void* b);
-typedef int (*MCompareDataFunc) (const void* a, const void* b, void* user_data);
+typedef int (*MCompareDataFunc) (const void* a, const void* b, void* func_data);
 typedef boolean (*MEqualFunc) (const void* a, const void* b);
-
+typedef void (*MFunc) (void* data, void* func_data);
 
 #endif

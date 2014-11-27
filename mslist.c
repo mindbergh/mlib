@@ -140,7 +140,7 @@ unsigned int mslist_length(MSList *list) {
 void mslist_foreach(MSList* list, MFunc func, void* func_data) {
     while (list) {
         MSList *next = list->next;
-        (*func) (list->data, func_data);
+        (*func)(list->data, func_data);
         list = next;
     }
 }
