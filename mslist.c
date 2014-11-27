@@ -137,7 +137,7 @@ unsigned int mslist_length(MSList *list) {
     return length;
 }
 
-void mslist_foreach (MSList* list, MFunc func, void* func_data) {
+void mslist_foreach(MSList* list, MFunc func, void* func_data) {
     while (list) {
         MSList *next = list->next;
         (*func) (list->data, func_data);
@@ -155,11 +155,11 @@ MSList* mslist_remove(MSList *list, void* data) {
     tmp = list;
     while (tmp) {
         if (tmp->data == data) {
-            if (prev)
+            if (prev) {
                 prev->next = tmp->next;
-            else
+            } else {
                 list = tmp->next;
-
+            }
             free(tmp);
             break;
         }
@@ -178,12 +178,11 @@ MSList* mslist_remove_all(MSList *list, void* data) {
     while (tmp) {
         if (tmp->data == data) {
             MSList *next = tmp->next;
-
-            if (prev)
+            if (prev){
                 prev->next = next;
-            else
+            } else {
                 list = next;
-
+            }
             free(tmp);
             tmp = next;
         } else {

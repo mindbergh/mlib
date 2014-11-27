@@ -11,31 +11,43 @@ MList* mlist_new(void) {
     return mnew0(MList)
 }
 
-MList* mlist_append(MList* list, void* data) {
-    MList* new_list;
-    MList* last;
+MList* mlist_append (MList* list, void* data) {
+  MList *new_list;
+  MList *last;
+  
+  new_list = mlist_new();
+  new_list->data = data;
+  new_list->next = NULL;
+  
+  if (list) {
+      last = mlist_last(list);
+      last->next = new_list;
+      new_list->prev = last;
 
-    new_list = mlist_new();
-    new_list->data = data;
-    new_list->next = NULL;
-
-    if (list) {
-        last = mlist_last(list);
-        last->next = new_list;
-        return list;
-    } else {
-        return new_list;
+      return list;
+    }
+  else {
+      new_list->prev = NULL;
+      return new_list;
     }
 }
 
 MList* mlist_prepend(MList* list, void* data) {
-    MList *new_list;
-
-    new_list = mlist_new();
-    new_list->data = data;
-    new_list->next = list;
-
-    return new_list;
+  MList *new_list;
+  
+  new_list = mlist_alloc ();
+  new_list->data = data;
+  new_list->next = list;
+  
+  if (list) {
+      new_list->prev = list->prev;
+      if (list->prev)
+        list->prev->next = new_list;
+      list->prev = new_list;
+    } else {
+        new_list->prev = NULL;
+  }
+  return new_list;
 }
 
 /* insert data into the given list at given position
@@ -47,46 +59,35 @@ MList* mlist_prepend(MList* list, void* data) {
  * @return the pointer to the head
  */
 
-MList* mlist_insert(MList* list, void* data, int position) {
-    MList *prev_list;
-    MList *tmp_list;
-    MList *new_list;
+MList* mlist_insert (MList* list, void* data, int position) {
+  MList *new_list;
+  MList *tmp_list;
 
-    if (position < 0)
-        return mlist_append (list, data);
-    else if (position == 0)
-        return mlist_prepend (list, data);
+  if (position < 0)
+    return mlist_append(list, data);
+  else if (position == 0)
+    return mlist_prepend(list, data);
 
-    new_list = mlist_new();
-    new_list->data = data;
+  tmp_list = mlist_get(list, position);
+  if (!tmp_list)
+    return mlist_append (list, data);
 
-    if (!list)
-    {
-        new_list->next = NULL;
-        return new_list;
-    }
+  new_list = mlist_new();
+  new_list->data = data;
+  new_list->prev = tmp_list->prev;
+  tmp_list->prev->next = new_list;
+  new_list->next = tmp_list;
+  tmp_list->prev = new_list;
 
-    prev_list = NULL;
-    tmp_list = list;
-
-    while ((position-- > 0) && tmp_list) {
-        prev_list = tmp_list;
-        tmp_list = tmp_list->next;
-    }
-
-    new_list->next = prev_list->next;
-    prev_list->next = new_list;
-
-    return list;
+  return list;
 }
 
 
-
-MList* mlist_get(MList *list, unsigned int n) {
-    while (n-- > 0 && list)
-        list = list->next;
-
-    return list;
+MList* mlist_get(MList *list, unsigned int n)
+  while ((n-- > 0) && list)
+    list = list->next;
+  
+  return list;
 }
 
 void* mlist_getdata(MList* list, unsigned int n) {
@@ -146,61 +147,109 @@ void mlist_foreach (MList* list, MFunc func, void* func_data) {
 }
 
 
-/* remove given node from the list
+
+/* remove a node with the given data
+ * if multiple nodes contain the given data, only remove the 1st one
  */
-
-MList* mlist_remove(MList *list, MList *link) {
+MList* mlist_remove(MList *list, void* data) {
   MList *tmp;
-  MList *prev;
 
-  prev = NULL;
   tmp = list;
-
   while (tmp) {
-      if (tmp == link) {
-          if (prev)
-            prev->next = tmp->next;
-          if (list == tmp)
-            list = list->next;
+      if (tmp->data != data) {
+        tmp = tmp->next;
+    } else {
+          list = mlist_remove_link(list, tmp);
+          free(tmp);
 
-          tmp->next = NULL;
           break;
         }
-
-      prev = tmp;
-      tmp = tmp->next;
     }
+  return list;
+}
+
+
+MList* mlist_remove_all(MList *list, void* data) {
+    MList *tmp = list;
+
+  while (tmp) {
+      if (tmp->data != data)
+        tmp = tmp->next;
+      else {
+          MList* next = tmp->next;
+
+          if (tmp->prev)
+            tmp->prev->next = next;
+          else
+            list = next;
+          if (next)
+            next->prev = tmp->prev;
+
+          free(tmp);
+          tmp = next;
+        }
+    }
+  return list;
+}
+
+
+/* remove given node from the list
+*/
+MList* mlist_remove_link(MList *list, MList *link) {
+    if (link == NULL)
+    return list;
+
+  if (link->prev) {
+      if (link->prev->next == link)
+        link->prev->next = link->next;
+      else
+        fprintf(stderr, "corrupted double-linked list detected");
+    }
+  if (link->next) {
+      if (link->next->prev == link)
+        link->next->prev = link->prev;
+      else
+        fprintf(stderr, "corrupted double-linked list detected");
+    }
+
+  if (link == list)
+    list = list->next;
+
+  link->next = NULL;
+  link->prev = NULL;
 
   return list;
 }
 
 
 /* remove given node from the list and free it
- */
-MList* mlist_delete(MList *list, MList *link) {
-  list = mlist_remove(list, link);
-  free(list);
+*/
+MList* mlist_delete_link(MList *list, MList *link) {
+    list = mlist_remove_link (list, link_);
+     free(link_);
+
   return list;
 }
 
+
 /* Free the entire list but does not free data
- */
-void mlist_free(MList *list) {
+*/
+void mslist_free(MSList *list) {
     if (list == NULL) {
         return;
     }
-    mlist_free(list->next);
+    mslist_free(list->next);
     free(list);
     return;
 }
 
 /* Free the entire list and associated data
- */
-void mlist_free_full(MList *list) {
+*/
+void mslist_free_full(MSList *list) {
     if (list == NULL) {
         return;
     }
-    mlist_free(list->next);
+    mslist_free(list->next);
     free(list->data);
     free(list);
     return;

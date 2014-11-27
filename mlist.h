@@ -16,18 +16,22 @@ struct _MList {
 };
 
 
-MSList* mslist_new(void);
-MSList* mslist_append(MSList* list, void* data);
-MSList* mslist_prepend(MSList* list, void* data);
-MSList* mslist_insert (MSList* list, void* data, int position);
-MSList* mslist_get(MSList *list, unsigned int n);
-void* mslist_getdata(MSList* list, unsigned int n);
-MSList* mslist_find(MSList* list, void* data);
-int mslist_index(MSList* list, void* data);
-MSList* mslist_last(MSList *list);
-unsigned int mslist_length(MSList *list);
-void mslist_foreach (MSList* list, MFunc func, void* func_data);
-
-
+MList* mlist_new(void);
+MList* mlist_append(MList* list, void* data);
+MList* mlist_prepend(MList* list, void* data);
+MList* mlist_insert (MList* list, void* data, int position);
+MList* mlist_get(MList *list, unsigned int n);
+void* mlist_getdata(MList* list, unsigned int n);
+MList* mlist_find(MList* list, void* data);
+int mlist_index(MList* list, void* data);
+MList* mlist_last(MList *list);
+unsigned int mlist_length(MList *list);
+void mlist_foreach(MList* list, MFunc func, void* func_data);
+MList* mlist_remove(MList *list, void* data);
+MList* mlist_remove_all(MList *list, void* data);
+MList* mlist_remove_link(MList *list, MList *link);
+MList* mlist_delete_link(MList *list, MList *link);
+void mlist_free(MList *list);
+void mlist_free_full(MList *list);
 
 #endif
