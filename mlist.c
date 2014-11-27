@@ -7,20 +7,20 @@
 #include "mlist.h"
 #include "mutil.h"
 
-MSList* mlist_new(void) {
+MList* mlist_new(void) {
     return mnew0(MList)
 }
 
-MSList* mlist_append(MSList* list, void* data) {
-    MSList* new_list;
-    MSList* last;
+MList* mlist_append(MList* list, void* data) {
+    MList* new_list;
+    MList* last;
 
-    new_list = mslist_new();
+    new_list = mlist_new();
     new_list->data = data;
     new_list->next = NULL;
 
     if (list) {
-        last = mslist_last(list);
+        last = mlist_last(list);
         last->next = new_list;
         return list;
     } else {
@@ -28,10 +28,10 @@ MSList* mlist_append(MSList* list, void* data) {
     }
 }
 
-MSList* mslist_prepend(MSList* list, void* data) {
-    MSList *new_list;
+MList* mlist_prepend(MList* list, void* data) {
+    MList *new_list;
 
-    new_list = mslist_new();
+    new_list = mlist_new();
     new_list->data = data;
     new_list->next = list;
 
@@ -47,17 +47,17 @@ MSList* mslist_prepend(MSList* list, void* data) {
  * @return the pointer to the head
  */
 
-MSList* mslist_insert(MSList* list, void* data, int position) {
-    MSList *prev_list;
-    MSList *tmp_list;
-    MSList *new_list;
+MList* mlist_insert(MList* list, void* data, int position) {
+    MList *prev_list;
+    MList *tmp_list;
+    MList *new_list;
 
     if (position < 0)
-        return mslist_append (list, data);
+        return mlist_append (list, data);
     else if (position == 0)
-        return mslist_prepend (list, data);
+        return mlist_prepend (list, data);
 
-    new_list = mslist_new();
+    new_list = mlist_new();
     new_list->data = data;
 
     if (!list)
@@ -82,21 +82,21 @@ MSList* mslist_insert(MSList* list, void* data, int position) {
 
 
 
-MSList* mslist_get(MSList *list, unsigned int n) {
+MList* mlist_get(MList *list, unsigned int n) {
     while (n-- > 0 && list)
         list = list->next;
 
     return list;
 }
 
-void* mslist_getdata(MSList* list, unsigned int n) {
+void* mlist_getdata(MList* list, unsigned int n) {
     while (n-- > 0 && list)
         list = list->next;
 
     return list ? list->data : NULL;
 }
 
-MSList* mslist_find(MSList* list, void* data) {
+MList* mlist_find(MList* list, void* data) {
     while (list) {
         if (list->data == data)
             break;
@@ -106,7 +106,7 @@ MSList* mslist_find(MSList* list, void* data) {
     return list;
 }
 
-int mslist_index(MSList* list, void* data) {
+int mlist_index(MList* list, void* data) {
     int i = 0;
     while (list) {
         if (list->data == data)
@@ -118,7 +118,7 @@ int mslist_index(MSList* list, void* data) {
     return -1;
 }
 
-MSList* mslist_last(MSList *list) {
+MList* mlist_last(MList *list) {
     if (list) {
         while (list->next)
             list = list->next;
@@ -127,7 +127,7 @@ MSList* mslist_last(MSList *list) {
     return list;
 }
 
-unsigned int mslist_length(MSList *list) {
+unsigned int mlist_length(MList *list) {
     unsigned int length = 0;
     while (list) {
         length++;
@@ -137,9 +137,9 @@ unsigned int mslist_length(MSList *list) {
     return length;
 }
 
-void mslist_foreach (MSList* list, MFunc func, void* func_data) {
+void mlist_foreach (MList* list, MFunc func, void* func_data) {
     while (list) {
-        MSList *next = list->next;
+        MList *next = list->next;
         (*func) (list->data, func_data);
         list = next;
     }
@@ -149,9 +149,9 @@ void mslist_foreach (MSList* list, MFunc func, void* func_data) {
 /* remove given node from the list
  */
 
-MSList* mslist_remove(MSList *list, MSList *link) {
-  MSList *tmp;
-  MSList *prev;
+MList* mlist_remove(MList *list, MList *link) {
+  MList *tmp;
+  MList *prev;
 
   prev = NULL;
   tmp = list;
@@ -177,30 +177,30 @@ MSList* mslist_remove(MSList *list, MSList *link) {
 
 /* remove given node from the list and free it
  */
-MSList* mslist_delete(MSList *list, MSList *link) {
-  list = mslist_remove(list, link);
+MList* mlist_delete(MList *list, MList *link) {
+  list = mlist_remove(list, link);
   free(list);
   return list;
 }
 
 /* Free the entire list but does not free data
  */
-void mslist_free(MSList *list) {
+void mlist_free(MList *list) {
     if (list == NULL) {
         return;
     }
-    mslist_free(list->next);
+    mlist_free(list->next);
     free(list);
     return;
 }
 
 /* Free the entire list and associated data
  */
-void mslist_free_full(MSList *list) {
+void mlist_free_full(MList *list) {
     if (list == NULL) {
         return;
     }
-    mslist_free(list->next);
+    mlist_free(list->next);
     free(list->data);
     free(list);
     return;

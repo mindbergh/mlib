@@ -150,90 +150,90 @@ void mslist_foreach (MSList* list, MFunc func, void* func_data) {
  * if multiple nodes contain the given data, only remove the 1st one
  */
 MSList* mslist_remove(MSList *list, void* data) {
-  MSList *tmp, *prev = NULL;
+    MSList *tmp, *prev = NULL;
 
-  tmp = list;
-  while (tmp) {
-      if (tmp->data == data) {
-          if (prev)
-            prev->next = tmp->next;
-          else
-            list = tmp->next;
+    tmp = list;
+    while (tmp) {
+        if (tmp->data == data) {
+            if (prev)
+                prev->next = tmp->next;
+            else
+                list = tmp->next;
 
-          free(tmp);
-          break;
+            free(tmp);
+            break;
         }
-      prev = tmp;
-      tmp = prev->next;
+        prev = tmp;
+        tmp = prev->next;
     }
 
-  return list;
+    return list;
 }
 
 
 MSList* mslist_remove_all(MSList *list, void* data) {
-  MSList *tmp, *prev = NULL;
+    MSList *tmp, *prev = NULL;
 
-  tmp = list;
-  while (tmp) {
-      if (tmp->data == data) {
-          MSList *next = tmp->next;
+    tmp = list;
+    while (tmp) {
+        if (tmp->data == data) {
+            MSList *next = tmp->next;
 
-          if (prev)
-            prev->next = next;
-          else
-            list = next;
+            if (prev)
+                prev->next = next;
+            else
+                list = next;
 
-          free(tmp);
-          tmp = next;
+            free(tmp);
+            tmp = next;
         } else {
-          prev = tmp;
-          tmp = prev->next;
+            prev = tmp;
+            tmp = prev->next;
         }
     }
 
-  return list;
+    return list;
 }
 
 
 /* remove given node from the list
- */
+*/
 MSList* mslist_remove_link(MSList *list, MSList *link) {
-  MSList *tmp;
-  MSList *prev;
+    MSList *tmp;
+    MSList *prev;
 
-  prev = NULL;
-  tmp = list;
+    prev = NULL;
+    tmp = list;
 
-  while (tmp) {
-      if (tmp == link) {
-          if (prev)
-            prev->next = tmp->next;
-          if (list == tmp)
-            list = list->next;
+    while (tmp) {
+        if (tmp == link) {
+            if (prev)
+                prev->next = tmp->next;
+            if (list == tmp)
+                list = list->next;
 
-          tmp->next = NULL;
-          break;
+            tmp->next = NULL;
+            break;
         }
 
-      prev = tmp;
-      tmp = tmp->next;
+        prev = tmp;
+        tmp = tmp->next;
     }
 
-  return list;
+    return list;
 }
 
 
 /* remove given node from the list and free it
- */
+*/
 MSList* mslist_delete_link(MSList *list, MSList *link) {
-  list = mslist_remove_link(list, link);
-  free(list);
-  return list;
+    list = mslist_remove_link(list, link);
+    free(list);
+    return list;
 }
 
 /* Free the entire list but does not free data
- */
+*/
 void mslist_free(MSList *list) {
     if (list == NULL) {
         return;
@@ -244,7 +244,7 @@ void mslist_free(MSList *list) {
 }
 
 /* Free the entire list and associated data
- */
+*/
 void mslist_free_full(MSList *list) {
     if (list == NULL) {
         return;
