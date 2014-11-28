@@ -8,7 +8,7 @@
 #include "mutil.h"
 
 MSList* mslist_new(void) {
-    return mnew0(MSList)
+    return mnew0(MSList);
 }
 
 MSList* mslist_append(MSList* list, void* data) {

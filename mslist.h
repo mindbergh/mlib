@@ -6,7 +6,7 @@
 
 #ifndef MSLIST_H
 #define MSLIST_H
-
+#include <mlib/mtypes.h>
 typedef struct _MSList MSList;
 
 struct _MSList {

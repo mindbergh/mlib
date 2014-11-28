@@ -6,6 +6,7 @@
 
 #ifndef MLIST_H
 #define MLIST_H
+#include <mlib/mtypes.h>
 
 typedef struct _MList MList;
 
@@ -22,7 +23,7 @@ MList* mlist_prepend(MList* list, void* data);
 MList* mlist_insert (MList* list, void* data, int position);
 MList* mlist_get(MList *list, unsigned int n);
 void* mlist_getdata(MList* list, unsigned int n);
-MList* mlist_find(MList* list, void* data);
+MList* mlist_find(MList* list, const void* data);
 MList* mlist_find_custom(MList* list, const void* data, MCompareFunc func);
 int mlist_index(MList* list, void* data);
 MList* mlist_last(MList *list);

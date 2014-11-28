@@ -5,8 +5,10 @@
  */
 
 #include <mlib/mtypes.h>
+#include <stdlib.h>
+#include <stdio.h>
 
-#define mnew0(type) ((type*) calloc(sizeof (type)))
-#define mnew(type) ((type*) malloc(sizeof (type)))
+#define mnew0(type) ((type*) calloc(1, sizeof(type)))
+#define mnew(type) ((type*) malloc(sizeof(type)))
 
 

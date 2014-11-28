@@ -6,6 +6,8 @@
 
 #ifndef MQUEUE_H
 #define MQUEUE_H
+#include <mlib/mtypes.h>
+#include <mlib/mlist.h>
 
 typedef struct _MQueue MQueue;
 
@@ -20,7 +22,7 @@ struct _MQueue {
 MQueue* mqueue_new(void);
 bool mqueue_is_empty(MQueue* queue);
 unsigned int mqueue_get_length(MQueue* queue);
-void mqueue_foreach(MQueue* queue, MFunc func, void func_data);
+void mqueue_foreach(MQueue* queue, MFunc func, void* func_data);
 MList* mqueue_find(MQueue* queue, const void* data);
 void mqueue_push_head(MQueue* queue, void* data);
 void mqueue_push_tail(MQueue* queue, void* data);
