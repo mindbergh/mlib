@@ -58,7 +58,7 @@ MList* mlist_prepend(MList* list, void* data) {
  * @return the pointer to the head
  */
 
-MList* mlist_insert (MList* list, void* data, int position) {
+MList* mlist_insert(MList* list, void* data, int position) {
     MList *new_list;
     MList *tmp_list;
 

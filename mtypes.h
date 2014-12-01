@@ -1,4 +1,4 @@
-/* GLIB - Library of useful routines for C programming
+/* Some type define
  *
  * Author: Ming Fang <mingf@cs.cmu.edu>
  * Time:   11/26/2014
