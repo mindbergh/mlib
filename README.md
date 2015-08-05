@@ -1,7 +1,7 @@
 The Ming library for C
 ==============
 
-This is library that contains useful structures and methods for myself C programming.
+This is library that contains useful structures and methods for C programming used by myself.
 It corrently contains:
 
 1. list
